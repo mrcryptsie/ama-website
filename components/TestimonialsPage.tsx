@@ -52,7 +52,7 @@ const itemVariants = {
 };
 
 const TestimonialCard: React.FC<{ testimonial: Testimonial }> = ({ testimonial }) => (
-    <motion.div 
+    <motion.div
         className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full"
         variants={itemVariants}
         whileHover={{ y: -8, boxShadow: '0px 15px 25px rgba(0,0,0,0.1)' }}
@@ -74,16 +74,46 @@ const TestimonialCard: React.FC<{ testimonial: Testimonial }> = ({ testimonial }
 const TestimonialsPage: React.FC = () => {
     return (
         <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-            <motion.section className="py-20 bg-ama-blue text-white" variants={itemVariants}>
-                <div className="container mx-auto px-6 text-center">
-                    <h1 className="text-4xl md:text-5xl font-black mb-4">Paroles de notre Communauté</h1>
-                    <p className="text-lg max-w-3xl mx-auto text-gray-200">
+            {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+            <motion.section 
+              className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+              variants={itemVariants} // Utilise itemVariants pour l'animation de base
+            >
+                <motion.img
+                  // Image de fond différente pour la page Témoignages
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxNXx8YWZyaWNhbiUyMGNvbW11bml0eXxlbnwxfHx8fDE3MTc4NjY5MDB8MA&ixlib=rb-4.0.3&q=80&w=1080" 
+                  alt="African community gathering"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  initial={{ scale: 1.05, filter: 'grayscale(50%)' }}
+                  animate={{ scale: 1, filter: 'grayscale(0%)' }}
+                  transition={{ duration: 10, ease: "easeOut" }} // Transition plus douce
+                />
+                {/* Overlay semi-transparent */}
+                <div className="absolute inset-0 bg-ama-blue opacity-85"></div> 
+
+                <div className="container mx-auto px-6 text-center relative z-10"> 
+                    <motion.h1 
+                      className="text-4xl md:text-5xl font-black text-white mb-4"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        Paroles de notre Communauté
+                    </motion.h1>
+                    <motion.p 
+                      className="text-lg max-w-3xl mx-auto text-gray-200"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
+                    >
                         Découvrez ce que nos boursiers, mentors et partenaires pensent de l'expérience AMA.
-                    </p>
+                    </motion.p>
                 </div>
             </motion.section>
+            {/* --- FIN DE LA MODIFICATION --- */}
 
-            <motion.section 
+
+            <motion.section
                 className="py-20 bg-ama-gray"
                 variants={sectionVariants}
                 initial="offscreen"

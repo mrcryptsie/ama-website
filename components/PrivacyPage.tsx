@@ -3,17 +3,54 @@ import { motion } from 'framer-motion';
 
 const PrivacyPage: React.FC = () => {
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
-      className="bg-white"
+      className="bg-white" // Garde le fond blanc pour le reste du contenu
     >
-      <div className="py-20 bg-ama-gray">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-black text-ama-blue">Politique de Confidentialité</h1>
+      {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        initial={{ opacity: 0 }} // Animation d'entrée pour la section
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.img
+          // Image de fond différente pour la page Confidentialité
+          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw0fHxwcml2YWN5JTIwc2VjdXJpdHl8ZW58MXx8fHwxNzE3ODY5ODIyfDA&ixlib=rb-4.0.3&q=80&w=1080"
+          alt="Data privacy and security concept"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05, filter: 'grayscale(30%)' }}
+          animate={{ scale: 1, filter: 'grayscale(0%)' }}
+          transition={{ duration: 10, ease: "easeInOut" }} // Transition douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-[#0A2540] opacity-85"></div> {/* Utilise votre couleur bleue */}
+
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <motion.h1
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black text-white"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Politique de Confidentialité
+          </motion.h1>
+          {/* Optionnel : Ajouter un sous-titre si désiré */}
+          {/* <motion.p
+            className="text-lg max-w-2xl mx-auto text-gray-200 mt-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Votre confiance est notre priorité.
+          </motion.p> */}
         </div>
-      </div>
+      </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
+
 
       <div className="container mx-auto px-6 py-12 text-gray-700 max-w-4xl">
         <p className="mb-4 font-semibold">Dernière mise à jour : 25 Juillet 2024</p>
@@ -54,7 +91,7 @@ const PrivacyPage: React.FC = () => {
 
         <h2 className="text-2xl font-bold text-ama-blue mt-8 mb-4">4. Sécurité de l'Information</h2>
         <p className="mb-6">
-          Nous mettons en œuvre une variété de mesures de sécurité pour préserver la sécurité de vos informations personnelles. L'accès à vos informations est limité au personnel autorisé qui a besoin de les connaître pour effectuer une tâche spécifique.
+          Nous mettons en œuvre une variété de mesures de sécurité pour préserver la sécurité de vos informations personnelles. L'accès à vos informations est limité au personnel autorisé qui a besoin de les connaître pour effectuer une tâche spécifiques.
         </p>
 
         <h2 className="text-2xl font-bold text-ama-blue mt-8 mb-4">5. Vos Droits</h2>

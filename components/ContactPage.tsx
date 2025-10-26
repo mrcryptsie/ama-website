@@ -18,7 +18,6 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
             <motion.button layout onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center text-left">
                 <h4 className="font-semibold text-lg text-ama-blue">{q}</h4>
                 <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                    {/* Correction: Suppression des classes Tailwind 'transform' et 'transition-transform' redondantes/conflictuelles car Framer Motion gère la transformation et la transition. */}
                     <svg className={`w-6 h-6`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </motion.div>
             </motion.button>
@@ -41,14 +40,46 @@ const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
 const ContactPage: React.FC = () => {
  return (
     <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-      <motion.section className="py-20 bg-ama-gray" variants={itemVariants}>
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-black text-center text-ama-blue mb-4">Contactez-nous</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto text-gray-600">
+        {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section 
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={itemVariants} // Utilise itemVariants pour l'animation de base
+      >
+        <motion.img
+          // Image de fond différente pour la page Contact
+          src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw0fHxjb250YWN0JTIwdXN8ZW58MXx8fHwxNzE3ODY4NDgyfDA&ixlib=rb-4.0.3&q=80&w=1080" 
+          alt="Contact us concept"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05, filter: 'brightness(0.7)' }}
+          animate={{ scale: 1, filter: 'brightness(1)' }}
+          transition={{ duration: 8, ease: "easeInOut" }} // Transition douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-85"></div> 
+
+        <div className="container mx-auto px-6 text-center relative z-10"> 
+          <motion.h1 
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black text-white mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Contactez-nous
+          </motion.h1>
+          <motion.p 
+            // Texte gris clair
+            className="text-lg text-center max-w-3xl mx-auto text-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Une question ? Une proposition de partenariat ? N'hésitez pas à nous contacter.
-          </p>
+          </motion.p>
         </div>
       </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
+
 
       <motion.section className="py-20 bg-white" initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.2 }} variants={sectionVariants}>
         <div className="container mx-auto px-6">
@@ -104,7 +135,6 @@ const ContactPage: React.FC = () => {
 
                 <motion.div variants={sectionVariants}>
                     <h3 className="text-xl font-bold text-ama-blue mb-3">Suivez-nous</h3>
-                    {/* Correction: Suppression de variants={sectionVariants} sur ce div. Le parent 'motion.div' gère déjà le 'staggerChildren'. Ce div wrapper n'a pas besoin d'être un conteneur d'animation lui-même. */}
                     <motion.div className="flex space-x-4">
                         <motion.a href="https://linkedin.com/company/bourseama" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-ama-orange" variants={itemVariants} whileHover={{y:-2, scale: 1.1}}><span className="sr-only">LinkedIn</span><svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg></motion.a>
                         <motion.a href="#" className="text-gray-500 hover:text-ama-orange" variants={itemVariants} whileHover={{y:-2, scale: 1.1}}><span className="sr-only">Facebook</span><svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v2.385z"/></svg></motion.a>

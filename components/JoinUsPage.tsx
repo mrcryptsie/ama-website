@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -15,14 +14,44 @@ const itemVariants = {
 const JoinUsPage: React.FC = () => {
     return (
         <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-            <motion.section className="py-20 bg-ama-blue text-white" variants={itemVariants}>
-                <div className="container mx-auto px-6 text-center">
-                    <h1 className="text-4xl md:text-5xl font-black mb-4">Rejoignez Notre Mission</h1>
-                    <p className="text-lg max-w-3xl mx-auto text-gray-200">
+             {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+            <motion.section 
+              className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+              variants={itemVariants} // Utilise itemVariants pour l'animation de base
+            >
+                <motion.img
+                  // Image de fond différente pour la page JoinUs
+                  src="https://images.unsplash.com/photo-1543269865-cbf427effbad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwyfHx0ZWFjaGluZyUyMGFmcmljYXxlbnwxfHx8fDE3MTc4NjkyNDl8MA&ixlib=rb-4.0.3&q=80&w=1080" 
+                  alt="Teaching or mentoring session"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  initial={{ scale: 1.05, y: -10 }}
+                  animate={{ scale: 1, y: 0 }}
+                  transition={{ duration: 10, ease: "easeInOut" }} // Transition douce
+                />
+                {/* Overlay semi-transparent */}
+                <div className="absolute inset-0 bg-ama-blue opacity-85"></div> 
+
+                <div className="container mx-auto px-6 text-center relative z-10"> 
+                    <motion.h1 
+                      className="text-4xl md:text-5xl font-black text-white mb-4"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        Rejoignez Notre Mission
+                    </motion.h1>
+                    <motion.p 
+                      className="text-lg max-w-3xl mx-auto text-gray-200"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
+                    >
                         Vous êtes un expert passionné par la transmission du savoir ? Aidez-nous à former la prochaine génération de leaders technologiques en Afrique.
-                    </p>
+                    </motion.p>
                 </div>
             </motion.section>
+            {/* --- FIN DE LA MODIFICATION --- */}
+
 
             <motion.section 
                 className="py-20 bg-white"

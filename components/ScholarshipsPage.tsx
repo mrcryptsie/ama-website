@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Testimonial, ChartData } from '../types';
+import { Testimonial, ChartData } from '../types'; // Assurez-vous que le chemin est correct
 
+// Données (inchangées)
 const testimonials: Testimonial[] = [
   {
     quote: "La qualité de l'explication était à la fois claire, explicite et simple. L'ingénieur a répondu à toutes les questions correctement. J'ai tout compris et j'ai trouvé les notions abordées très intéressantes.",
@@ -27,7 +27,7 @@ const chartData: ChartData[] = [
             { label: "Très satisfaisant", value: 70.4, color: "#003366" },
             { label: "Satisfaisante", value: 18.5, color: "#FF8C00" },
             { label: "Moyenne", value: 7.4, color: "#00A86B" },
-            { label: "Insatisfaisante", value: 3.7, color: "#CCCCCC" }, // Estimated from slice
+            { label: "Insatisfaisante", value: 3.7, color: "#CCCCCC" },
         ],
     },
     {
@@ -50,6 +50,8 @@ const itemVariants = {
     onscreen: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
+// --- Composant PieChart (version basique, inchangée par rapport à votre code original) ---
+// Note: Si vous aviez la version améliorée dans votre code, gardez-la.
 const PieChart: React.FC<{ data: ChartData }> = ({ data }) => {
     return (
         <motion.div className="bg-white p-6 rounded-lg shadow-lg text-center" variants={itemVariants}>
@@ -97,18 +99,53 @@ const PieChart: React.FC<{ data: ChartData }> = ({ data }) => {
         </motion.div>
     );
 };
+// --- Fin Composant PieChart ---
 
 const ScholarshipsPage: React.FC = () => {
   return (
     <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-      <motion.section className="py-20 bg-ama-blue text-white" variants={itemVariants}>
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Programme de Bourses d'Excellence</h1>
-          <p className="text-lg max-w-3xl mx-auto text-gray-200">Nous nous engageons à former les meilleurs talents africains, indépendamment de leur situation financière.</p>
+       {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={itemVariants} // Utilise itemVariants pour l'animation de base
+      >
+        <motion.img
+          // Image de fond différente pour la page Bourses
+          src="https://images.unsplash.com/photo-1542887800-0d1a4a49658e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwyMHx8Z3JhZHVhdGlvbiUyMGFmcmljYXxlbnwxfHx8fDE3MTc4NzAwNTN8MA&ixlib=rb-4.0.3&q=80&w=1080"
+          alt="African student celebrating graduation"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, ease: "linear" }} // Transition douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-85"></div>
+
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <motion.h1
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black text-white mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Programme de Bourses d'Excellence
+          </motion.h1>
+          <motion.p
+            // Texte gris clair
+            className="text-lg max-w-3xl mx-auto text-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Nous nous engageons à former les meilleurs talents africains, indépendamment de leur situation financière.
+          </motion.p>
         </div>
       </motion.section>
+       {/* --- FIN DE LA MODIFICATION --- */}
 
-      <motion.section 
+
+      <motion.section
         className="py-20 bg-white"
         initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}
@@ -131,7 +168,7 @@ const ScholarshipsPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <motion.section 
+      <motion.section
         className="py-20 bg-ama-gray"
         initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}
@@ -158,7 +195,7 @@ const ScholarshipsPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <motion.section 
+      <motion.section
         className="py-20 bg-white"
         initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}
@@ -173,7 +210,7 @@ const ScholarshipsPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <motion.section 
+      <motion.section
         className="py-20 bg-ama-gray"
         initial="offscreen" whileInView="onscreen" viewport={{ once: true, amount: 0.2 }}
         variants={sectionVariants}

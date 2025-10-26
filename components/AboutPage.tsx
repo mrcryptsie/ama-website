@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TeamMember } from '../types';
+import { TeamMember } from '../types'; // Assurez-vous que le chemin est correct
 
 const allTeamMembers: TeamMember[] = [
     // ... (team members data remains the same)
@@ -36,7 +35,7 @@ const itemVariants = {
 };
 
 const ValueCard: React.FC<{ title: string, description: string, icon: React.ReactNode }> = ({ title, description, icon }) => (
-    <motion.div 
+    <motion.div
       className="bg-white p-6 rounded-lg shadow-md text-center h-full"
       variants={itemVariants}
     >
@@ -47,7 +46,7 @@ const ValueCard: React.FC<{ title: string, description: string, icon: React.Reac
 );
 
 const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
-  <motion.div 
+  <motion.div
     className="bg-white rounded-lg shadow-xl overflow-hidden text-center flex flex-col"
     variants={itemVariants}
     whileHover={{ y: -8, transition: { duration: 0.2 }}}
@@ -64,12 +63,44 @@ const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
 const AboutPage: React.FC = () => {
   return (
     <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-      <motion.section className="py-20 bg-ama-gray" variants={itemVariants}>
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-black text-center text-ama-blue mb-4">À Propos de l'AMA</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto text-gray-600">Découvrez notre histoire, notre mission et les valeurs qui nous animent pour façonner l'avenir de la technologie en Afrique.</p>
+      {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={itemVariants} // Utilise itemVariants pour l'animation de base
+      >
+        <motion.img
+          // Image de fond différente pour la page About
+          src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwyMHx8YWZyaWNhbiUyMGVkdWNhdGlvbnxlbnwxfHx8fDE3MTc4NjY3MDh8MA&ixlib=rb-4.0.3&q=80&w=1080" 
+          alt="Collaboration and learning in Africa"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05, opacity: 0.8 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 15, ease: "easeOut" }} // Transition plus douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-85"></div> {/* Légèrement plus opaque */}
+        
+        <div className="container mx-auto px-6 text-center relative z-10"> 
+          <motion.h1 
+            className="text-4xl md:text-5xl font-black text-white mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            À Propos de l'AMA
+          </motion.h1>
+          <motion.p 
+            className="text-lg text-center max-w-3xl mx-auto text-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Découvrez notre histoire, notre mission et les valeurs qui nous animent pour façonner l'avenir de la technologie en Afrique.
+          </motion.p>
         </div>
       </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
+
 
       <motion.section className="py-20 bg-white" initial={{opacity: 0}} whileInView={{opacity: 1}} viewport={{once: true, amount: 0.5}} transition={{duration: 0.5}}>
         <div className="container mx-auto px-6">
@@ -84,8 +115,8 @@ const AboutPage: React.FC = () => {
             </motion.div>
           </div>
            <motion.div className="mt-20 text-center bg-ama-blue text-white p-10 rounded-lg shadow-2xl" initial={{opacity: 0, y: 50}} whileInView={{opacity: 1, y: 0}} viewport={{once: true, amount: 0.5}} transition={{duration: 0.5}}>
-              <h2 className="text-3xl font-bold mb-4">Notre Vision à l'Horizon 2030</h2>
-              <p className="text-xl max-w-4xl mx-auto text-gray-200">Bâtir l'écosystème de référence en Afrique pour le développement et la valorisation des talents scientifiques, avec pour ambition de certifier plus de 1 000 jeunes et de faciliter leur insertion durable dans le marché de l'emploi.</p>
+             <h2 className="text-3xl font-bold mb-4">Notre Vision à l'Horizon 2030</h2>
+             <p className="text-xl max-w-4xl mx-auto text-gray-200">Bâtir l'écosystème de référence en Afrique pour le développement et la valorisation des talents scientifiques, avec pour ambition de certifier plus de 1 000 jeunes et de faciliter leur insertion durable dans le marché de l'emploi.</p>
            </motion.div>
         </div>
       </motion.section>

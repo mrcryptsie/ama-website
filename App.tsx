@@ -4,7 +4,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
-import ProgramsPage from './components/ProgramsPage';
 import AdmissionPage from './components/AdmissionPage';
 import ScholarshipsPage from './components/ScholarshipsPage';
 import AlumniPage from './components/AlumniPage';
@@ -26,8 +25,6 @@ const App: React.FC = () => {
         return <HomePage setCurrentPage={setCurrentPage} />;
       case 'about':
         return <AboutPage />;
-      case 'programs':
-        return <ProgramsPage />;
       case 'admission':
         return <AdmissionPage />;
       case 'scholarships':

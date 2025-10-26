@@ -14,15 +14,44 @@ const itemVariants = {
 const AlumniPage: React.FC = () => {
   return (
     <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-      <motion.section className="py-20 bg-ama-blue text-white relative overflow-hidden" variants={itemVariants}>
-        <img src="https://picsum.photos/seed/graduation-cap/1920/1080" alt="Graduation" className="absolute inset-0 w-full h-full object-cover opacity-20"/>
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Programme AMA Alumni</h1>
-          <p className="text-lg max-w-3xl mx-auto text-gray-200">
+        {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section 
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={itemVariants} // Utilise itemVariants pour l'animation de base
+      >
+        <motion.img
+          // Image de fond différente pour la page Alumni
+          src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw0fHxidXNpbmVzcyUyMHRlYW0lMjBhZnJpY2F8ZW58MXx8fHwxNzE3ODY4Mjc3fDA&ixlib=rb-4.0.3&q=80&w=1080" 
+          alt="Professional African network"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05, filter: 'blur(3px)' }} // Effet initial différent
+          animate={{ scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1, ease: "easeOut" }} // Transition plus rapide
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-85"></div> 
+
+        <div className="container mx-auto px-6 text-center relative z-10"> 
+          <motion.h1 
+            className="text-4xl md:text-5xl font-black text-white mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Programme AMA Alumni
+          </motion.h1>
+          <motion.p 
+            className="text-lg max-w-3xl mx-auto text-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Notre vision : non seulement former des experts, mais préparer des professionnels complets, capables de transformer leurs connaissances en solutions concrètes pour les entreprises et la société.
-          </p>
+          </motion.p>
         </div>
       </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
+
 
       <motion.section 
         className="py-20 bg-white"
@@ -54,19 +83,19 @@ const AlumniPage: React.FC = () => {
           <h2 className="text-3xl font-bold text-center text-ama-blue mb-12">Les Piliers du Programme Alumni</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <motion.div className="bg-white p-8 rounded-lg shadow-md" variants={itemVariants} whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.08)' }}>
-                <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
-                <h3 className="text-xl font-bold text-ama-blue mb-2">Expérience Pratique</h3>
-                <p className="text-gray-600">Une phase d'alternance au sein d'entreprises partenaires de l'AMA offre une expérience concrète qui complète la formation académique.</p>
+              <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
+              <h3 className="text-xl font-bold text-ama-blue mb-2">Expérience Pratique</h3>
+              <p className="text-gray-600">Une phase d'alternance au sein d'entreprises partenaires de l'AMA offre une expérience concrète qui complète la formation académique.</p>
             </motion.div>
             <motion.div className="bg-white p-8 rounded-lg shadow-md" variants={itemVariants} whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.08)' }}>
-                <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
-                <h3 className="text-xl font-bold text-ama-blue mb-2">Développement Professionnel</h3>
-                <p className="text-gray-600">Ateliers, sessions de mentorat avec des experts de l'industrie, et masterclass sur les tendances émergentes pour maximiser votre employabilité.</p>
+              <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
+              <h3 className="text-xl font-bold text-ama-blue mb-2">Développement Professionnel</h3>
+              <p className="text-gray-600">Ateliers, sessions de mentorat avec des experts de l'industrie, et masterclass sur les tendances émergentes pour maximiser votre employabilité.</p>
             </motion.div>
             <motion.div className="bg-white p-8 rounded-lg shadow-md" variants={itemVariants} whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.08)' }}>
-                <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
-                <h3 className="text-xl font-bold text-ama-blue mb-2">Réseau Solide</h3>
-                <p className="text-gray-600">Les participants bénéficient d'un réseau professionnel solide, favorisant l'échange de connaissances et l'accès à des opportunités diversifiées.</p>
+              <div className="flex justify-center text-ama-orange mb-4"><svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+              <h3 className="text-xl font-bold text-ama-blue mb-2">Réseau Solide</h3>
+              <p className="text-gray-600">Les participants bénéficient d'un réseau professionnel solide, favorisant l'échange de connaissances et l'accès à des opportunités diversifiées.</p>
             </motion.div>
           </div>
         </div>
@@ -118,7 +147,7 @@ const AlumniPage: React.FC = () => {
                 className="mt-8 bg-ama-orange text-white font-bold py-3 px-8 rounded-full text-lg"
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             >
-                Rejoignez notre réseau
+              Rejoignez notre réseau
             </motion.button>
           </motion.div>
         </div>

@@ -1,20 +1,75 @@
-
 import React from 'react';
+import { motion } from 'framer-motion'; // Importer motion
+
+// Ajouter des variantes pour l'animation d'entrée
+const sectionVariants = {
+    offscreen: { opacity: 0, y: 50 },
+    onscreen: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const itemVariants = {
+    offscreen: { opacity: 0, y: 20 },
+    onscreen: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.2 } }
+};
+
 
 const TermsPage: React.FC = () => {
   return (
-    <div className="animate-fadeIn">
-      <section className="py-20 bg-ama-gray">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-black text-center text-ama-blue mb-4">Conditions d'Utilisation</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto text-gray-600">
-            Dernière mise à jour : {new Date().toLocaleDateString('fr-FR')}
-          </p>
-        </div>
-      </section>
+    // Remplacer div par motion.div et appliquer les variantes
+    <motion.div
+      initial="offscreen"
+      animate="onscreen" // Animer directement au chargement
+      variants={sectionVariants} // Utilise la variante de section pour l'ensemble
+      className="bg-white" // Garde le fond blanc pour le contenu
+    >
+        {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={sectionVariants} // Appliquer la variante ici aussi pour l'entrée
+      >
+        <motion.img
+          // Image de fond différente pour la page Conditions
+          src="https://images.unsplash.com/photo-1583508915901-b5f84c1dcde1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw0fHxkb2N1bWVudHN8ZW58MXx8fHwxNzE3ODcwNjc2fDA&ixlib=rb-4.0.3&q=80&w=1080"
+          alt="Abstract legal documents"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05, filter: 'blur(1px)' }}
+          animate={{ scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 5, ease: "easeInOut" }} // Transition douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-[#0A2540] opacity-85"></div> {/* Utilise votre couleur bleue */}
 
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 max-w-4xl prose lg:prose-lg">
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <motion.h1
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black text-white mb-4"
+            variants={itemVariants} // Animation pour le titre
+          >
+            Conditions d'Utilisation
+          </motion.h1>
+          <motion.p
+            // Texte gris clair
+            className="text-lg text-center max-w-3xl mx-auto text-gray-200"
+            variants={itemVariants} // Animation pour le paragraphe
+          >
+            {/* Affichage de la date actuelle formatée */}
+            Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </motion.p>
+        </div>
+      </motion.section>
+        {/* --- FIN DE LA MODIFICATION --- */}
+
+
+      {/* Utiliser motion.section pour animer le contenu */}
+      <motion.section
+        className="py-20 bg-white"
+        initial="offscreen"
+        whileInView="onscreen"
+        viewport={{ once: true, amount: 0.1 }} // Déclencher l'animation un peu plus tôt
+        variants={sectionVariants} // Variante pour l'animation de la section
+      >
+        <div className="container mx-auto px-6 max-w-4xl prose lg:prose-lg text-gray-700">
+          {/* Les styles prose de Tailwind s'appliqueront ici */}
           <h2>1. Acceptation des Conditions</h2>
           <p>
             En accédant et en utilisant le site web de l'Académie des Mathématiques Appliquées (le "Site"), vous acceptez d'être lié par les présentes Conditions d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le Site.
@@ -55,8 +110,8 @@ const TermsPage: React.FC = () => {
             Ces Conditions d'Utilisation sont régies par les lois en vigueur au Bénin.
           </p>
         </div>
-      </section>
-    </div>
+      </motion.section>
+    </motion.div>
   );
 };
 

@@ -61,7 +61,7 @@ const scholarsByCountry: ScholarByCountry[] = [
     ]},
 ];
 
-const galleryMembers: GalleryMember[] = scholarsByCountry.flatMap(country => 
+const galleryMembers: GalleryMember[] = scholarsByCountry.flatMap(country =>
     country.scholars.map(scholar => ({
         name: scholar.name,
         image: `https://picsum.photos/seed/${scholar.name.replace(/\s/g, '-')}/300/300`
@@ -94,37 +94,59 @@ const CohortPage: React.FC = () => {
   }, [filter]);
 
   return (
-    <motion.div 
+    <motion.div
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.1 }}
       variants={sectionVariants}
     >
-      <motion.section 
-        className="py-20 bg-ama-gray"
+      {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
         variants={sectionVariants}
       >
-        <div className="container mx-auto px-6 text-center">
-          <motion.h1 className="text-4xl md:text-5xl font-black text-ama-blue mb-4" variants={itemVariants}>La Première Cohorte (2025)</motion.h1>
-          <motion.p className="text-lg max-w-3xl mx-auto text-gray-600" variants={itemVariants}>
+        <motion.img
+          src="https://images.unsplash.com/photo-1581092147171-46b0a8507850?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw3OXx8YWZyaWNhbiUyMHNjaG9vbHxlbnwxfHx8fDE3MTc4NjYzNjV8MA&ixlib=rb-4.0.3&q=80&w=1080" // Image de fond
+          alt="African students collaborating"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-80"></div> 
+        
+        <div className="container mx-auto px-6 text-center relative z-10"> {/* z-10 pour que le texte soit au-dessus */}
+          <motion.h1 
+            className="text-4xl md:text-5xl font-black text-white mb-4" 
+            variants={itemVariants}
+          >
+            La Première Cohorte (2025)
+          </motion.h1>
+          <motion.p 
+            className="text-lg max-w-3xl mx-auto text-gray-200" 
+            variants={itemVariants}
+          >
             Découvrez les 39 pionniers qui forment la première promotion de l'Académie des Mathématiques Appliquées, sélectionnés parmi plus de 100 candidats à travers 8 pays.
           </motion.p>
         </div>
       </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
 
-      <motion.section 
+
+      <motion.section
         className="py-20 bg-white"
         variants={sectionVariants}
       >
         <div className="container mx-auto px-6">
             <motion.h2 className="text-3xl font-bold text-center text-ama-blue mb-12" variants={itemVariants}>Album Photos de la Promotion</motion.h2>
-            <motion.div 
+            <motion.div
               className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
               variants={sectionVariants}
             >
                 {galleryMembers.slice(0, 18).map((member, index) => (
-                    <motion.div 
-                      key={index} 
+                    <motion.div
+                      key={index}
                       className="group text-center"
                       variants={itemVariants}
                       whileHover={{ scale: 1.05, y: -5 }}
@@ -139,25 +161,25 @@ const CohortPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <motion.section 
+      <motion.section
         className="py-20 bg-ama-gray"
         variants={sectionVariants}
       >
         <div className="container mx-auto px-6">
           <motion.h2 className="text-3xl font-bold text-center text-ama-blue mb-12" variants={itemVariants}>Rapport sur la cohorte</motion.h2>
           <motion.div className="flex justify-center" variants={itemVariants}>
-            <iframe width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/c206a7fe-d833-4599-8fb7-06a277679dc1/page/guxWF" frameBorder="0" style={{ border:0 }} allowFullScreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+            <iframe title="Rapport Cohorte AMA" width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/c206a7fe-d833-4599-8fb7-06a277679dc1/page/guxWF" frameBorder="0" style={{ border:0 }} allowFullScreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
           </motion.div>
         </div>
       </motion.section>
-      
-      <motion.section 
+
+      <motion.section
         className="py-20 bg-white"
         variants={sectionVariants}
       >
         <div className="container mx-auto px-6">
           <motion.h2 className="text-3xl font-bold text-center text-ama-blue mb-12" variants={itemVariants}>Liste des Boursiers par Pays</motion.h2>
-          
+
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {countries.map(country => (
               <motion.button
@@ -179,7 +201,7 @@ const CohortPage: React.FC = () => {
           <motion.div className="space-y-12" layout>
             <AnimatePresence mode="wait">
             {filteredScholars.map(group => (
-              <motion.div 
+              <motion.div
                 key={group.country}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -187,13 +209,13 @@ const CohortPage: React.FC = () => {
                 transition={{duration: 0.3}}
               >
                 <h3 className="text-2xl font-bold text-ama-orange mb-6 border-b-2 border-ama-orange pb-2">{group.country}</h3>
-                <motion.div 
+                <motion.div
                   className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4"
                   variants={sectionVariants}
                 >
                   {group.scholars.map(scholar => (
-                    <motion.div 
-                      key={scholar.name} 
+                    <motion.div
+                      key={scholar.name}
                       className="bg-gray-50 p-4 rounded-md shadow-sm"
                       variants={itemVariants}
                       whileHover={{ backgroundColor: '#ffffff', scale: 1.03 }}

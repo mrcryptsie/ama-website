@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NewsArticle } from '../types';
+import { NewsArticle } from '../types'; // Assurez-vous que le chemin est correct
 
 // ... (data remains the same)
 const newsArticles: NewsArticle[] = [
@@ -66,7 +66,7 @@ const itemVariants = {
 
 
 const NewsCard: React.FC<{ article: NewsArticle }> = ({ article }) => (
-    <motion.div 
+    <motion.div
         className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col"
         variants={itemVariants}
         whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}
@@ -97,12 +97,46 @@ const NewsPage: React.FC = () => {
 
   return (
     <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
-      <motion.section className="py-20 bg-ama-gray" variants={itemVariants}>
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-black font-display text-center text-ama-blue mb-4">Actualités de l'Académie</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto text-gray-600">Suivez les derniers événements, succès et opportunités au sein de la communauté AMA.</p>
+       {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <motion.section 
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center" // Ajout de flex et justify-center
+        variants={itemVariants} // Utilise itemVariants pour l'animation de base
+      >
+        <motion.img
+          // Image de fond différente pour la page Actualités
+          src="https://images.unsplash.com/photo-1495020689067-958852a7765e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxuZXdzfGVufDF8fHx8MTcxNzg2OTY0NXww&ixlib=rb-4.0.3&q=80&w=1080" 
+          alt="News and information concept"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.1, filter: 'blur(2px)' }}
+          animate={{ scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 8, ease: "easeOut" }} // Transition douce
+        />
+        {/* Overlay semi-transparent */}
+        <div className="absolute inset-0 bg-ama-blue opacity-85"></div> 
+
+        <div className="container mx-auto px-6 text-center relative z-10"> 
+          <motion.h1 
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black font-display text-white mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Actualités de l'Académie
+          </motion.h1>
+          <motion.p 
+            // Texte gris clair
+            className="text-lg text-center max-w-3xl mx-auto text-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Suivez les derniers événements, succès et opportunités au sein de la communauté AMA.
+          </motion.p>
         </div>
       </motion.section>
+      {/* --- FIN DE LA MODIFICATION --- */}
+
 
       <motion.section 
         className="py-12 bg-white"
@@ -127,7 +161,7 @@ const NewsPage: React.FC = () => {
                       <p className="text-gray-600 mb-6">{featuredArticle.excerpt}</p>
                       <motion.a href="#" className="bg-ama-orange text-white font-bold py-2 px-6 rounded-full inline-block"
                          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                       >
+                        >
                           Lire l'article
                       </motion.a>
                   </div>

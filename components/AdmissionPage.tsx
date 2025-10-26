@@ -85,11 +85,10 @@ const CARD_STACK_OFFSET = 12;
 const CARD_SCALE_FACTOR = 0.05;
 const CARD_TILT_DEGREES = -10;
 
-// --- MODIFICATION ---
-// Nouveau composant de fond animé avec un fond gris clair uni et des bulles flottantes.
+// --- Fond animé gris clair avec bulles (inchangé) ---
 const AnimatedBackground = () => {
-  const numBubbles = 15; // Nombre de bulles
-  const bubbleColors = ['bg-blue-200', 'bg-orange-200', 'bg-purple-200', 'bg-green-200']; // Couleurs pour les bulles
+  const numBubbles = 15;
+  const bubbleColors = ['bg-blue-200', 'bg-orange-200', 'bg-purple-200', 'bg-green-200'];
 
   const generateRandomPosition = () => ({
     x: `${Math.random() * 100}vw`,
@@ -97,29 +96,28 @@ const AnimatedBackground = () => {
   });
 
   return (
-    // Fond gris très clair uni
     <div className="absolute inset-0 z-0 overflow-hidden bg-gray-100">
       {Array.from({ length: numBubbles }).map((_, i) => (
         <motion.div
           key={i}
           className={`absolute rounded-full opacity-60 ${bubbleColors[i % bubbleColors.length]}`}
           style={{
-            width: `${Math.random() * 40 + 20}px`, // Taille variable des bulles
+            width: `${Math.random() * 40 + 20}px`,
             height: `${Math.random() * 40 + 20}px`,
-            ...generateRandomPosition(), // Position initiale aléatoire
+            ...generateRandomPosition(),
           }}
           animate={{
-            x: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`], // Mouvement léger sur X
-            y: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`], // Mouvement léger sur Y
-            scale: [1, 1.2, 1], // Pulsation légère
-            opacity: [0.6, 0.8, 0.6], // Opacité fluctuante
+            x: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`],
+            y: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`],
+            scale: [1, 1.2, 1],
+            opacity: [0.6, 0.8, 0.6],
           }}
           transition={{
-            duration: Math.random() * 15 + 10, // Durée d'animation variable
+            duration: Math.random() * 15 + 10,
             repeat: Infinity,
             repeatType: 'reverse',
             ease: 'easeInOut',
-            delay: Math.random() * 5, // Délai aléatoire pour déphaser
+            delay: Math.random() * 5,
           }}
         />
       ))}
@@ -133,34 +131,52 @@ const AdmissionPage: React.FC = () => {
 
   const handleNextStep = () => {
     if (activeSteps.length === 0) return;
-    setActiveSteps((prev) => prev.slice(1)); // Retire le premier élément
+    setActiveSteps((prev) => prev.slice(1));
   };
 
   return (
     <div className="relative flex flex-col min-h-screen overflow-hidden">
       
-      {/* --- NOUVEAU FOND GRIS CLAIR AVEC BULLES --- */}
+      {/* Fond gris clair avec bulles */}
       <AnimatedBackground />
 
-      {/* --- Section Titre --- */}
-      <section className="py-20 text-center relative z-10">
-        <div className="container mx-auto px-6">
+      {/* --- MODIFICATION ICI : Section Header avec image de fond et overlay --- */}
+      <section 
+        className="py-20 relative overflow-hidden min-h-[40vh] flex items-center justify-center text-center" // Ajout de flex/center/text-center
+      >
+        <motion.img
+            // Image de fond différente pour la page Admission
+            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHw1fHxjb2Rpbmd8ZW58MXx8fHwxNzE3ODY3MTQwfDA&ixlib=rb-4.0.3&q=80&w=1080" 
+            alt="Coding challenge interface"
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 12, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }} // Animation lente
+          />
+          {/* Overlay semi-transparent */}
+          <div className="absolute inset-0 bg-[#0A2540] opacity-85"></div> {/* Utilise votre couleur bleue */}
+          
+        <div className="container mx-auto px-6 relative z-10"> {/* z-10 pour que le texte soit au-dessus */}
           <motion.h1 
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 10, delay: 0.2 } }}
-            className="text-4xl md:text-5xl font-black text-[#0A2540] drop-shadow-sm mb-4"
+            // Texte blanc
+            className="text-4xl md:text-5xl font-black text-white mb-4"
           >
             Le Chemin Vers l'Excellence
           </motion.h1>
           <motion.p 
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 10, delay: 0.4 } }}
-            className="text-lg max-w-2xl mx-auto text-gray-600"
+            // Texte gris clair
+            className="text-lg max-w-2xl mx-auto text-gray-200"
           >
             Découvrez notre processus d'admission interactif en 5 étapes.
           </motion.p>
         </div>
       </section>
+       {/* --- FIN DE LA MODIFICATION --- */}
+
 
       {/* --- Section "Jeu de Cartes" 3D (inchangée) --- */}
       <section className="flex-grow flex items-center justify-center container mx-auto px-6 pb-20 relative z-10">
@@ -217,7 +233,7 @@ const AdmissionPage: React.FC = () => {
                   whileHover={isTopCard ? { scale: 1.02, y: - (distance * CARD_STACK_OFFSET) - 10, rotateX: CARD_TILT_DEGREES + 2 } : {}}
                 >
                   
-                  {/* Contenu de la carte (inchangé, déjà parfait pour fond blanc) */}
+                  {/* Contenu de la carte (inchangé) */}
                   <div className="flex-shrink-0 flex items-center gap-6 mb-4 relative z-10">
                     <motion.div 
                       className="text-4xl md:text-5xl font-black text-[#f5a623]"
