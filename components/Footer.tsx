@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Page } from '../types';
 
 interface FooterProps {
@@ -12,73 +12,96 @@ const socialLinks = [
   { name: 'Twitter', url: '#', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616v.064c0 2.299 1.624 4.22 3.778 4.664-.468.127-.96.195-1.464.195-.299 0-.586-.029-.865-.083.615 1.956 2.404 3.379 4.529 3.419-1.78 1.396-4.032 2.226-6.484 2.226-.417 0-.83-.024-1.237-.074 2.298 1.474 5.021 2.34 8.001 2.34 9.605 0 14.856-7.85 14.556-14.596.983-.703 1.828-1.583 2.511-2.59z"/></svg> },
 ];
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+};
+
 const FooterLink: React.FC<{ page: Page, setCurrentPage: (page: Page) => void, children: React.ReactNode }> = ({ page, setCurrentPage, children }) => (
-    <li><a href={`#${page}`} onClick={(e) => {e.preventDefault(); setCurrentPage(page)}} className="hover:text-ama-orange transition-colors duration-300 text-sm text-gray-300">{children}</a></li>
+    <motion.li variants={itemVariants}>
+        <a href={`#${page}`} onClick={(e) => {e.preventDefault(); setCurrentPage(page)}} className="hover:text-ama-orange transition-colors duration-300 text-sm text-gray-300">{children}</a>
+    </motion.li>
 );
 
 const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
   return (
-    <footer className="bg-ama-blue text-white">
+    <motion.footer 
+        className="bg-ama-blue text-white"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={containerVariants}
+    >
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <motion.div className="grid grid-cols-2 md:grid-cols-5 gap-8" variants={containerVariants}>
           
-          <div className="col-span-2 md:col-span-1">
+          <motion.div className="col-span-2 md:col-span-1" variants={itemVariants}>
             <h3 className="font-display font-black text-xl mb-4">AMA</h3>
             <p className="text-gray-300 text-sm mb-4">Former l'excellence africaine en Data Science et IA.</p>
-             <div className="flex space-x-4">
+             <motion.div className="flex space-x-4" variants={containerVariants}>
               {socialLinks.map(link => (
-                <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-ama-orange transition-colors duration-300">
+                <motion.a 
+                    key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" 
+                    className="text-gray-300 hover:text-ama-orange transition-colors duration-300"
+                    variants={itemVariants}
+                    whileHover={{ y: -2, scale: 1.1 }}
+                >
                   <span className="sr-only">{link.name}</span>
                   {link.icon}
-                </a>
+                </motion.a>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="font-bold text-lg mb-4">Académie</h3>
-            <ul className="space-y-2">
+            <motion.ul className="space-y-2" variants={containerVariants}>
               <FooterLink page="about" setCurrentPage={setCurrentPage}>À propos</FooterLink>
               <FooterLink page="cohort" setCurrentPage={setCurrentPage}>Cohorte 2025</FooterLink>
               <FooterLink page="news" setCurrentPage={setCurrentPage}>Actualités</FooterLink>
               <FooterLink page="contact" setCurrentPage={setCurrentPage}>Contact</FooterLink>
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
           
-          <div>
-            <h3 className="font-bold text-lg mb-4">Formations</h3>
-            <ul className="space-y-2">
-              <FooterLink page="programs" setCurrentPage={setCurrentPage}>Programmes</FooterLink>
+          <motion.div variants={itemVariants}>
+            <h3 className="font-bold text-lg mb-4">Programme</h3>
+            <motion.ul className="space-y-2" variants={containerVariants}>
+              <FooterLink page="programs" setCurrentPage={setCurrentPage}>Programme</FooterLink>
               <FooterLink page="admission" setCurrentPage={setCurrentPage}>Admission</FooterLink>
               <FooterLink page="scholarships" setCurrentPage={setCurrentPage}>Bourses</FooterLink>
               <FooterLink page="testimonials" setCurrentPage={setCurrentPage}>Témoignages</FooterLink>
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
           
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="font-bold text-lg mb-4">S'impliquer</h3>
-            <ul className="space-y-2">
+            <motion.ul className="space-y-2" variants={containerVariants}>
               <FooterLink page="support" setCurrentPage={setCurrentPage}>Nous Soutenir</FooterLink>
               <FooterLink page="join" setCurrentPage={setCurrentPage}>Devenir Mentor</FooterLink>
               <FooterLink page="alumni" setCurrentPage={setCurrentPage}>Alumni</FooterLink>
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
           
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="font-bold text-lg mb-4">Légal</h3>
-            <ul className="space-y-2">
+            <motion.ul className="space-y-2" variants={containerVariants}>
               <FooterLink page="privacy" setCurrentPage={setCurrentPage}>Politique de Confidentialité</FooterLink>
               <FooterLink page="terms" setCurrentPage={setCurrentPage}>Conditions d'Utilisation</FooterLink>
-            </ul>
-          </div>
+            </motion.ul>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
-        <div className="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
+        <motion.div className="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-400" variants={itemVariants}>
           <p>&copy; {new Date().getFullYear()} Académie des Mathématiques Appliquées. Tous droits réservés.</p>
-        </div>
+        </motion.div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

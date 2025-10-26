@@ -1,0 +1,36 @@
+/* index.css */
+
+/* Pour l'arrière-plan animé des cartes (non utilisé dans cette version, mais ok de le garder) */
+@keyframes gradient-border {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Pour le fond dynamique de la page */
+@keyframes gradient-shift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* Styles pour une scrollbar personnalisée (Couleur orange mise à jour) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Largeur de la scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* Couleur de fond de la piste */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  /* MODIFICATION : Couleur orange (#f5a623) en RGBA */
+  background-color: rgba(245, 166, 35, 0.6); 
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  /* MODIFICATION : Couleur orange plus foncée au survol */
+  background-color: rgba(245, 166, 35, 0.8);
+}

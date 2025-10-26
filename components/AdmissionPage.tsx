@@ -1,123 +1,319 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const FAQItem: React.FC<{ q: string; a: string }> = ({ q, a }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-        <div className="border-b border-gray-200 py-4">
-            <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center text-left">
-                <h4 className="font-semibold text-lg text-ama-blue">{q}</h4>
-                <svg className={`w-6 h-6 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            {isOpen && <p className="mt-2 text-gray-600 pr-6">{a}</p>}
-        </div>
-    );
+// --- Les données des étapes (inchangées) ---
+const admissionStepsData = [
+  {
+    title: "Test Technique d'Admission",
+    description: "Évaluation de vos compétences fondamentales.",
+    details: (
+      <>
+        <p className="font-semibold text-gray-700 mb-2">
+          Prouvez votre potentiel en mathématiques, logique et Python.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-gray-700">
+          <li>Test en ligne chronométré : 90 minutes.</li>
+          <li>Questions à choix multiples & exercices de codage.</li>
+          <li>Thèmes : Algèbre linéaire, probabilités, Python avancé.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: 'Candidature en Ligne Complète',
+    description: 'Soumettez un dossier qui reflète votre personnalité.',
+    details: (
+      <>
+        <p className="font-semibold text-gray-700 mb-2">
+          Votre dossier est votre passeport pour la prochaine étape.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-gray-700">
+          <li>CV détaillé mettant en avant vos projets significatifs.</li>
+          <li>Lettre de motivation percutante et personnalisée.</li>
+          <li>Relevés de notes universitaires et diplômes pertinents.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: 'Étude de Cas Pratique',
+    description: 'Démontrez votre savoir-faire en 48h.',
+    details: (
+      <>
+        <p className="font-semibold text-gray-700 mb-2">
+          Un défi technique pour évaluer votre esprit critique.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-gray-700">
+          <li>Analyse approfondie d'un jeu de données complexe.</li>
+          <li>Conception d'un modèle prédictif innovant.</li>
+          <li>Présentation vidéo concise de vos résultats.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: "Entretien Approfondi avec le Jury",
+    description: "Un échange pour évaluer votre parcours et vision.",
+    details: (
+      <>
+        <p className="font-semibold text-gray-700 mb-2">
+          Rencontrez nos experts et partagez votre passion.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-gray-700">
+          <li>Discussion détaillée de votre approche sur l'étude de cas.</li>
+          <li>Questions techniques et conceptuelles ciblées.</li>
+          <li>Évaluation de votre adéquation avec la culture de l'AMA.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: "Décision Finale & Bienvenue",
+    description: "Le moment clé : la décision du comité.",
+    details: (
+      <p className="font-semibold text-gray-700">
+        Après délibération, le comité sélectionne les talents les plus
+        prometteteurs. La décision est communiquée rapidement.
+        Préparez-vous à débuter une transformation !
+      </p>
+    ),
+  },
+];
+
+// --- Paramètres d'Animation pour les Cartes ---
+const CARD_STACK_OFFSET = 12;
+const CARD_SCALE_FACTOR = 0.05;
+const CARD_TILT_DEGREES = -10;
+
+// --- MODIFICATION ---
+// Nouveau composant de fond animé avec un fond gris clair uni et des bulles flottantes.
+const AnimatedBackground = () => {
+  const numBubbles = 15; // Nombre de bulles
+  const bubbleColors = ['bg-blue-200', 'bg-orange-200', 'bg-purple-200', 'bg-green-200']; // Couleurs pour les bulles
+
+  const generateRandomPosition = () => ({
+    x: `${Math.random() * 100}vw`,
+    y: `${Math.random() * 100}vh`,
+  });
+
+  return (
+    // Fond gris très clair uni
+    <div className="absolute inset-0 z-0 overflow-hidden bg-gray-100">
+      {Array.from({ length: numBubbles }).map((_, i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full opacity-60 ${bubbleColors[i % bubbleColors.length]}`}
+          style={{
+            width: `${Math.random() * 40 + 20}px`, // Taille variable des bulles
+            height: `${Math.random() * 40 + 20}px`,
+            ...generateRandomPosition(), // Position initiale aléatoire
+          }}
+          animate={{
+            x: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`], // Mouvement léger sur X
+            y: [`${Math.random() * 200 - 100}px`, `${Math.random() * 200 - 100}px`], // Mouvement léger sur Y
+            scale: [1, 1.2, 1], // Pulsation légère
+            opacity: [0.6, 0.8, 0.6], // Opacité fluctuante
+          }}
+          transition={{
+            duration: Math.random() * 15 + 10, // Durée d'animation variable
+            repeat: Infinity,
+            repeatType: 'reverse',
+            ease: 'easeInOut',
+            delay: Math.random() * 5, // Délai aléatoire pour déphaser
+          }}
+        />
+      ))}
+    </div>
+  );
 };
 
 
 const AdmissionPage: React.FC = () => {
+  const [activeSteps, setActiveSteps] = useState(admissionStepsData);
+
+  const handleNextStep = () => {
+    if (activeSteps.length === 0) return;
+    setActiveSteps((prev) => prev.slice(1)); // Retire le premier élément
+  };
+
   return (
-    <div className="animate-fadeIn">
-      <section className="py-20 bg-ama-gray">
+    <div className="relative flex flex-col min-h-screen overflow-hidden">
+      
+      {/* --- NOUVEAU FOND GRIS CLAIR AVEC BULLES --- */}
+      <AnimatedBackground />
+
+      {/* --- Section Titre --- */}
+      <section className="py-20 text-center relative z-10">
         <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-black text-center text-ama-blue mb-4">Processus d'Admission</h1>
-          <p className="text-lg text-center max-w-3xl mx-auto text-gray-600">
-            Rejoignez l'élite de la data science en Afrique. Découvrez les étapes pour postuler à notre programme d'excellence.
-          </p>
+          <motion.h1 
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 10, delay: 0.2 } }}
+            className="text-4xl md:text-5xl font-black text-[#0A2540] drop-shadow-sm mb-4"
+          >
+            Le Chemin Vers l'Excellence
+          </motion.h1>
+          <motion.p 
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 10, delay: 0.4 } }}
+            className="text-lg max-w-2xl mx-auto text-gray-600"
+          >
+            Découvrez notre processus d'admission interactif en 5 étapes.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* --- Section "Jeu de Cartes" 3D (inchangée) --- */}
+      <section className="flex-grow flex items-center justify-center container mx-auto px-6 pb-20 relative z-10">
+        <div
+          className="relative w-full max-w-xl h-[500px]"
+          style={{
+            perspective: '1200px',
+            transformStyle: 'preserve-3d',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <AnimatePresence>
+            {activeSteps.map((step, index) => {
+              const isTopCard = index === 0;
+              const distance = index; 
+              const originalStepNumber = admissionStepsData.findIndex(s => s.title === step.title) + 1;
+
+              return (
+                <motion.div
+                  key={step.title}
+                  layoutId={step.title} 
+                  
+                  initial={{ z: -200, opacity: 0, scale: 0.7 }}
+                  animate={{
+                    x: 0,
+                    y: -distance * CARD_STACK_OFFSET,
+                    z: -distance * 20,
+                    scale: 1 - distance * CARD_SCALE_FACTOR,
+                    zIndex: admissionStepsData.length - distance,
+                    opacity: distance < 4 ? 1 : 0.2,
+                    rotateX: CARD_TILT_DEGREES,
+                    filter: distance > 0 ? `blur(${distance * 1.5}px)` : 'none',
+                    boxShadow: isTopCard 
+                        ? '0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 40px rgba(245, 166, 35, 0.6)' 
+                        : '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+                  }}
+                  exit={{
+                    x: 400, y: -50, z: 500,
+                    opacity: 0, scale: 0.5,
+                    rotateX: 45, rotateY: 30,
+                    transition: { duration: 0.5, ease: 'easeOut' },
+                  }}
+                  transition={{ type: 'spring', stiffness: 150, damping: 20 }}
+                  onClick={isTopCard ? handleNextStep : undefined}
+                  
+                  className={`
+                    absolute w-full h-[400px] md:h-[450px] p-8 bg-white
+                    rounded-3xl shadow-3xl flex flex-col justify-between
+                    ${isTopCard ? 'cursor-pointer' : 'pointer-events-none'}
+                  `}
+                  style={{ transformOrigin: 'center center' }}
+                  whileHover={isTopCard ? { scale: 1.02, y: - (distance * CARD_STACK_OFFSET) - 10, rotateX: CARD_TILT_DEGREES + 2 } : {}}
+                >
+                  
+                  {/* Contenu de la carte (inchangé, déjà parfait pour fond blanc) */}
+                  <div className="flex-shrink-0 flex items-center gap-6 mb-4 relative z-10">
+                    <motion.div 
+                      className="text-4xl md:text-5xl font-black text-[#f5a623]"
+                      key={`num-${originalStepNumber}`} 
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0, transition: { delay: 0.1 } }}
+                    >
+                      {`0${originalStepNumber}`}
+                    </motion.div>
+                    <div>
+                      <motion.h3 
+                        key={`title-${originalStepNumber}`} 
+                        className="text-2xl md:text-3xl font-bold text-[#0A2540]"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0, transition: { delay: 0.2 } }}
+                      >
+                        {step.title}
+                      </motion.h3>
+                      <motion.p 
+                        key={`desc-${originalStepNumber}`} 
+                        className="text-gray-600 text-lg"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0, transition: { delay: 0.3 } }}
+                      >
+                        {step.description}
+                      </motion.p>
+                    </div>
+                  </div>
+                  <motion.div 
+                    key={`details-${originalStepNumber}`} 
+                    className="flex-grow text-gray-700 relative z-10 overflow-y-auto custom-scrollbar pr-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, transition: { delay: 0.4 } }}
+                  >
+                    {step.details}
+                  </motion.div>
+                  {isTopCard && (
+                    <motion.div 
+                      className="mt-4 text-center text-sm font-semibold text-[#f5a623] relative z-10"
+                      animate={{ opacity: [0.5, 1, 0.5], transition: { repeat: Infinity, duration: 2 } }}
+                    >
+                      (Cliquez pour continuer)
+                    </motion.div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+
+          {/* --- La Carte de Fin (inchangée) --- */}
+          <AnimatePresence>
+            {activeSteps.length === 0 && (
+              <motion.div
+                className="absolute w-full h-[400px] md:h-[450px] p-8 bg-white
+                           rounded-3xl shadow-3xl flex flex-col justify-center items-center text-center"
+                initial={{ opacity: 0, scale: 0.7, rotateY: 180 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1, 
+                  rotateY: 0,
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 50px rgba(245, 166, 35, 0.8)'
+                }}
+                transition={{ type: 'spring', stiffness: 100, damping: 15, delay: 0.3 }}
+              >
+                <motion.h2 
+                  className="text-4xl font-black text-[#0A2540] mb-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
+                >
+                  Processus Terminé !
+                </motion.h2>
+                <motion.p 
+                  className="text-lg text-gray-600 mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0, transition: { delay: 0.7 } }}
+                >
+                  Vous avez exploré toutes les étapes. Prêt à relever le défi ?
+                </motion.p>
+                
+                <motion.button
+                  className="bg-[#f5a623] text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg"
+                  whileHover={{ scale: 1.08, y: -5, boxShadow: '0 10px 20px rgba(245, 166, 35, 0.4)' }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1, transition: { delay: 0.9, type: 'spring' } }}
+                >
+                  Postuler maintenant
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
       </section>
       
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div>
-              <h2 className="text-3xl font-bold text-ama-blue mb-8">Votre Parcours de Candidature</h2>
-              
-              <div className="space-y-8 relative border-l-2 border-ama-orange pl-8">
-                <div className="relative">
-                  <div className="absolute -left-10 top-1.5 w-4 h-4 bg-ama-orange rounded-full border-4 border-white shadow"></div>
-                  <h3 className="text-xl font-bold text-ama-blue">Étape 1: Candidature en Ligne</h3>
-                  <p className="text-gray-600 mt-2">Soumettez votre candidature via notre formulaire en ligne. La première sélection est effectuée sur la base de la qualité de votre motivation.</p>
-                </div>
-                <div className="relative">
-                  <div className="absolute -left-10 top-1.5 w-4 h-4 bg-ama-orange rounded-full border-4 border-white shadow"></div>
-                  <h3 className="text-xl font-bold text-ama-blue">Étape 2: Présélection & Complément de Dossier</h3>
-                  <p className="text-gray-600 mt-2">Les candidats présélectionnés sont invités à compléter leurs dossiers avec les justificatifs de leur niveau d'études et de leurs compétences scientifiques.</p>
-                </div>
-                <div className="relative">
-                  <div className="absolute -left-10 top-1.5 w-4 h-4 bg-ama-orange rounded-full border-4 border-white shadow"></div>
-                  <h3 className="text-xl font-bold text-ama-blue">Étape 3: Examen Complet des Dossiers</h3>
-                  <p className="text-gray-600 mt-2">L'ensemble des dossiers est traité avec la plus grande rigueur pour garantir une sélection transparente et conforme à nos standards d'excellence.</p>
-                </div>
-                <div className="relative">
-                   <div className="absolute -left-10 top-1.5 w-4 h-4 bg-ama-orange rounded-full border-4 border-white shadow"></div>
-                  <h3 className="text-xl font-bold text-ama-blue">Étape 4: Sélection Finale</h3>
-                  <p className="text-gray-600 mt-2">À l'issue de l'examen et de l'évaluation des compétences, la sélection finale est effectuée afin de retenir les candidats les mieux qualifiés, assurant une intégration optimale.</p>
-                </div>
-              </div>
-
-              <div className="mt-12 bg-gray-50 p-6 rounded-lg">
-                 <h3 className="text-2xl font-bold text-ama-blue mb-4">Documents Requis</h3>
-                 <ul className="list-disc list-inside space-y-2 text-gray-700">
-                    <li>Curriculum Vitae (CV) à jour</li>
-                    <li>Lettre de motivation expliquant votre projet professionnel</li>
-                    <li>Copies de vos diplômes et relevés de notes</li>
-                    <li>Lettres de recommandation (facultatif mais recommandé)</li>
-                 </ul>
-              </div>
-
-            </div>
-            
-            <div>
-              <div className="bg-ama-blue text-white p-8 rounded-lg shadow-xl sticky top-24">
-                <h3 className="text-2xl font-bold mb-6">Critères d'Éligibilité</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <svg className="w-6 h-6 text-ama-orange mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    <span><span className="font-bold">Diplôme :</span> Diplômés en mathématiques, informatique, statistiques, physique ou domaines connexes.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="w-6 h-6 text-ama-orange mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    <span><span className="font-bold">Compétences :</span> Solides bases en mathématiques et en programmation.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="w-6 h-6 text-ama-orange mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    <span><span className="font-bold">Motivation :</span> Passion pour la data science et l'IA, avec un projet professionnel clair et une volonté d'impact en Afrique.</span>
-                  </li>
-                   <li className="flex items-start">
-                    <svg className="w-6 h-6 text-ama-orange mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    <span><span className="font-bold">Localisation :</span> Priorité aux candidats résidant en Afrique francophone.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-ama-gray">
-        <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-ama-blue mb-12">Foire Aux Questions - Admission</h2>
-            <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-                <FAQItem q="Quelle est la date limite pour les candidatures ?" a="Les dates pour la prochaine cohorte seront annoncées prochainement. Inscrivez-vous à notre newsletter pour être notifié." />
-                <FAQItem q="Le programme est-il entièrement en français ?" a="Oui, la langue principale d'enseignement et de communication est le français. Une bonne maîtrise de l'anglais technique est cependant un atout." />
-                <FAQItem q="Y a-t-il des frais de candidature ?" a="Non, le processus de candidature à l'AMA est entièrement gratuit." />
-                <FAQItem q="Puis-je postuler si je suis en dernière année d'études ?" a="Oui, les étudiants en dernière année de leur cursus peuvent postuler, à condition d'être diplômés avant le début de la formation." />
-            </div>
-        </div>
-      </section>
-
-       <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-ama-blue mb-4">Prêt à Transformer Votre Avenir ?</h2>
-             <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">Les candidatures pour la cohorte 2026 ouvriront bientôt. Laissez-nous votre email pour être notifié en priorité.</p>
-            <form className="flex flex-col sm:flex-row justify-center gap-4 max-w-lg mx-auto">
-                <input type="email" placeholder="Votre adresse email" className="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ama-orange" />
-                <button type="submit" className="bg-ama-orange text-white font-bold py-3 px-8 rounded-md hover:bg-opacity-90 transition-transform duration-300 hover:scale-105">
-                    Me notifier
-                </button>
-            </form>
-        </div>
-      </section>
     </div>
   );
 };

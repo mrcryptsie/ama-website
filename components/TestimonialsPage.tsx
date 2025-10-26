@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface Testimonial {
     quote: string;
@@ -9,6 +9,7 @@ interface Testimonial {
     type: 'Boursier' | 'Mentor' | 'Partenaire';
 }
 
+// ... (data remains the same)
 const testimonials: Testimonial[] = [
     {
         quote: "La clarté des explications était remarquable. Le formateur a su rendre simples des concepts très complexes et a répondu à toutes nos questions avec patience et expertise. J'ai énormément appris.",
@@ -40,8 +41,23 @@ const testimonials: Testimonial[] = [
     },
 ];
 
+const sectionVariants = {
+    offscreen: { opacity: 0, y: 50 },
+    onscreen: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } }
+};
+
+const itemVariants = {
+    offscreen: { opacity: 0, y: 30 },
+    onscreen: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+};
+
 const TestimonialCard: React.FC<{ testimonial: Testimonial }> = ({ testimonial }) => (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
+    <motion.div 
+        className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full"
+        variants={itemVariants}
+        whileHover={{ y: -8, boxShadow: '0px 15px 25px rgba(0,0,0,0.1)' }}
+        transition={{ duration: 0.3 }}
+    >
         <div className="p-8 border-l-4 border-ama-orange bg-gray-50 flex-grow">
             <p className="text-gray-700 italic text-lg">"{testimonial.quote}"</p>
         </div>
@@ -52,22 +68,28 @@ const TestimonialCard: React.FC<{ testimonial: Testimonial }> = ({ testimonial }
                 <p className="font-semibold text-gray-600">{testimonial.role}</p>
             </div>
         </div>
-    </div>
+    </motion.div>
 );
 
 const TestimonialsPage: React.FC = () => {
     return (
-        <div className="animate-fadeIn">
-            <section className="py-20 bg-ama-blue text-white">
+        <motion.div initial="offscreen" animate="onscreen" variants={sectionVariants}>
+            <motion.section className="py-20 bg-ama-blue text-white" variants={itemVariants}>
                 <div className="container mx-auto px-6 text-center">
                     <h1 className="text-4xl md:text-5xl font-black mb-4">Paroles de notre Communauté</h1>
                     <p className="text-lg max-w-3xl mx-auto text-gray-200">
                         Découvrez ce que nos boursiers, mentors et partenaires pensent de l'expérience AMA.
                     </p>
                 </div>
-            </section>
+            </motion.section>
 
-            <section className="py-20 bg-ama-gray">
+            <motion.section 
+                className="py-20 bg-ama-gray"
+                variants={sectionVariants}
+                initial="offscreen"
+                whileInView="onscreen"
+                viewport={{ once: true, amount: 0.2 }}
+            >
                 <div className="container mx-auto px-6">
                     <div className="grid md:grid-cols-2 gap-12">
                         {testimonials.map((testimonial, index) => (
@@ -75,8 +97,8 @@ const TestimonialsPage: React.FC = () => {
                         ))}
                     </div>
                 </div>
-            </section>
-        </div>
+            </motion.section>
+        </motion.div>
     );
 };
 
