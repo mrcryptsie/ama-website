@@ -106,7 +106,7 @@ const AboutPage: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-bold text-ama-blue mb-4">Notre Mission</h2>
+              <h2 className="text-3xl font-bold text-ama-blue mb-4">Pourquoi l'AMA ?</h2>
               <p className="text-gray-700 mb-4 text-lg">Face au double défi du déficit de profils techniques en Afrique et de l'inadéquation entre la formation universitaire et le marché de l'emploi, l'AMA apporte une réponse concrète.</p>
               <p className="text-gray-700 font-semibold text-ama-blue bg-orange-50 border-l-4 border-ama-orange p-4 rounded-r-lg text-lg">Notre mission est de former des experts capables de répondre efficacement aux exigences du monde professionnel, en leur offrant des programmes innovants et alignés sur les standards internationaux.</p>
             </motion.div>
@@ -146,6 +146,7 @@ const AboutPage: React.FC = () => {
           </div>
       </motion.section>
 
+      {/*
        <motion.section className="py-20 bg-white" initial="hidden" whileInView="visible" viewport={{once: true, amount: 0.2}} variants={containerVariants}>
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-ama-blue mb-12">Le Corps Professoral</h2>
@@ -203,6 +204,7 @@ const AboutPage: React.FC = () => {
           </motion.div>
         </div>
       </motion.section>
+      */}
     </motion.div>
   );
 };

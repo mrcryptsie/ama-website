@@ -137,7 +137,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
         </div>
       </section>
 
-      {/* Mots du Coordonnateur de l'AMA */}
+      {/* Pourquoi l'AMA ? */}
       <motion.section
         className="py-20 bg-gray-100"
         initial={{ opacity: 0}}
@@ -148,7 +148,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-bold text-ama-blue mb-4">Mots du Coordonnateur de l'AMA</h2>
+              <h2 className="text-3xl font-bold text-ama-blue mb-4">Pourquoi l'AMA ?</h2>
               <p className="text-gray-700 mb-4 text-lg">L'Académie des Mathématiques Appliquées (AMA) se positionne comme un écosystème d'excellence dédié à la transformation du potentiel académique des jeunes talents scientifiques en compétences pratiques.</p>
               <p className="text-gray-700 font-semibold text-ama-blue bg-orange-50 border-l-4 border-ama-orange p-4 rounded-r-lg text-lg">Face au double défi du déficit de profils techniques et de l'inadéquation entre la formation universitaire et le marché de l'emploi en Afrique, l'AMA apporte une réponse concrète en outillant les étudiants et diplômés de savoir-faire opérationnels.</p>
             </motion.div>

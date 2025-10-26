@@ -170,9 +170,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             {simpleNavLink('home', 'Accueil')}
             <Dropdown title="L'Académie" isMobile={isMobile} variants={isMobile ? mobileItemVariant : undefined}>
                 {dropdownNavLink('about', 'À propos', childVariants)}
-                {dropdownNavLink('cohort', 'Cohorte 2025', childVariants)}
+                {/*dropdownNavLink('cohort', 'Cohorte 2025', childVariants) */}
                 {dropdownNavLink('testimonials', 'Témoignages', childVariants)}
-                {dropdownNavLink('news', 'Actualités', childVariants)}
+                {/*dropdownNavLink('news', 'Actualités', childVariants) */}
             </Dropdown>
             <Dropdown title="Candidature" isMobile={isMobile} variants={isMobile ? mobileItemVariant : undefined}>
                 {dropdownNavLink('admission', 'Admission', childVariants)}
@@ -181,7 +181,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
             <Dropdown title="S'impliquer" isMobile={isMobile} variants={isMobile ? mobileItemVariant : undefined}>
                 {dropdownNavLink('support', 'Nous soutenir', childVariants)}
                 {dropdownNavLink('join', 'Devenir Mentor', childVariants)}
-                {dropdownNavLink('alumni', 'Alumni', childVariants)}
+                {/*dropdownNavLink('alumni', 'Alumni', childVariants)*/}
             </Dropdown>
             {simpleNavLink('contact', 'Contact')}
         </>
